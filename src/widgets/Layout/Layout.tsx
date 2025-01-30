@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router"
 
-import { Button, Flex } from "antd"
+import { Button } from "antd"
 
 import { useAuth } from "@shared/hooks/useAuth"
 
