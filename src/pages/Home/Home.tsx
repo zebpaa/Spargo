@@ -209,48 +209,9 @@ const Home = () => {
 				/>
 			)}
 
-			{/* <div className={cls.table__container}> */}
-			{/* {items.length > 0 ? (
-					<table>
-						<thead>
-							<tr>
-								<th>id</th>
-								<th>Название</th>
-								<th>Описание</th>
-								<th>Значение</th>
-							</tr>
-						</thead>
-						<tbody>
-							{items
-								.filter((item) => {
-									if (activeTab === "undeleted") {
-										return item.deletedAt === null
-									}
-									if (activeTab === "deleted") {
-										return item.deletedAt !== null
-									}
-									return item
-								})
-								.map((item) => (
-									<tr
-										key={item.id}
-										onClick={() => handleNavigateToNds(item.id)}
-										style={{ cursor: "pointer" }}
-									>
-										<td>{item.id}</td>
-										<td>{item.name}</td>
-										<td>{item.description}</td>
-										<td>{item.value}</td>
-									</tr>
-								))}
-						</tbody>
-					</table>
-				) : (
-					<p>"Айтемсов нет"</p>
-				)} */}
-
 			<div className={cls.btnGroup}>
 				<Button
+				className={cls.addBtn}
 					size="large"
 					variant="outlined"
 					htmlType="submit"
@@ -268,17 +229,7 @@ const Home = () => {
 				>
 					Жесткое удаление
 				</Button>
-
-				<Button
-					size="large"
-					variant="outlined"
-					htmlType="submit"
-					onClick={() => handleOpenModal("searching")}
-				>
-					Поиск
-				</Button>
 			</div>
-			{/* </div> */}
 		</div>
 	)
 }

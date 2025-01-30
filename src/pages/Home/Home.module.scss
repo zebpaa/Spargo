@@ -1,7 +1,3 @@
-button {
-	cursor: pointer;
-}
-
 .tab {
 	display: flex;
 	justify-content: space-between;
@@ -13,11 +9,6 @@ button {
 .loader {
 	display: flex;
 	justify-content: center;
-}
-
-.table__container {
-	margin-top: 10px;
-	margin-bottom: 10px;
 }
 
 table {
@@ -36,40 +27,13 @@ table {
 	}
 }
 
+.addBtn {
+	margin-right: 5px;
+}
+
 .btnGroup {
 	display: flex;
 	justify-content: space-between;
-	width: 355px;
-	margin-top: 10px;
+	width: 270px;
 	margin-bottom: 10px;
-}
-
-.form {
-	display: flex;
-	flex-direction: column;
-	button {
-		cursor: pointer;
-		width: 200px;
-		border: none;
-		&:hover {
-			opacity: 90%;
-		}
-	}
-}
-
-.formGroup {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 10px;
-	input {
-		width: 200px;
-		border-radius: 5px;
-		border: 1px solid transparent;
-		&:focus {
-			outline: none;
-		}
-		&:hover {
-			opacity: 90%;
-		}
-	}
 }
