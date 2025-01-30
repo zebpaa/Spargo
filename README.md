@@ -45,6 +45,13 @@ code .
 After opening in IDE
 
 ## Screenshots
+![Screenshot_1](https://github.com/user-attachments/assets/e3ec202c-dc33-4713-8c71-d228b027328f)
+![Screenshot_7](https://github.com/user-attachments/assets/7ac9ca27-697f-442f-a435-42eb8a31cfc5)
+![Screenshot_2](https://github.com/user-attachments/assets/2436b33b-8908-436b-814c-5ed24aa40a73)
+![Screenshot_3](https://github.com/user-attachments/assets/4fb3f9b9-dc79-4d54-8170-b5099d2deca6)
+![Screenshot_4](https://github.com/user-attachments/assets/eec31c8c-bbe8-4eb0-bb7c-c4849cd87fe2)
+![Screenshot_5](https://github.com/user-attachments/assets/76177124-4123-4330-af9b-c6f9661a98cc)
+![Screenshot_6](https://github.com/user-attachments/assets/7be5b755-9f36-481a-9c65-bd2e310a7e4a)
 
 
 
