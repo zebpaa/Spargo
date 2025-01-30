@@ -1,0 +1,75 @@
+button {
+	cursor: pointer;
+}
+
+.tab {
+	display: flex;
+	justify-content: space-between;
+	width: 250px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.loader {
+	display: flex;
+	justify-content: center;
+}
+
+.table__container {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+table {
+	border: solid 1px #5b78a4;
+	background-color: antiquewhite;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+	td,
+	th {
+		border: solid 1px #5b78a4;
+		text-align: center;
+		// max-width: 100px;
+		// white-space: nowrap; /* Запрет на перенос строк */
+		// overflow: hidden; /* Скрытие переполненного текста */
+		// text-overflow: ellipsis; /* Добавление многоточия */
+	}
+}
+
+.btnGroup {
+	display: flex;
+	justify-content: space-between;
+	width: 355px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	button {
+		cursor: pointer;
+		width: 200px;
+		border: none;
+		&:hover {
+			opacity: 90%;
+		}
+	}
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+	input {
+		width: 200px;
+		border-radius: 5px;
+		border: 1px solid transparent;
+		&:focus {
+			outline: none;
+		}
+		&:hover {
+			opacity: 90%;
+		}
+	}
+}
