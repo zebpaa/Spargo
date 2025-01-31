@@ -35,6 +35,13 @@ cd Spargo/
 code .
 ```
 
+## Development command
+
+```sh
+npm install
+npm run dev
+```
+
 ## Screenshots
 
 ![Screenshot_1](https://github.com/user-attachments/assets/e3ec202c-dc33-4713-8c71-d228b027328f)
@@ -44,10 +51,3 @@ code .
 ![Screenshot_4](https://github.com/user-attachments/assets/eec31c8c-bbe8-4eb0-bb7c-c4849cd87fe2)
 ![Screenshot_5](https://github.com/user-attachments/assets/76177124-4123-4330-af9b-c6f9661a98cc)
 ![Screenshot_6](https://github.com/user-attachments/assets/7be5b755-9f36-481a-9c65-bd2e310a7e4a)
-
-## Development command
-
-```sh
-npm install
-npm run dev
-```
