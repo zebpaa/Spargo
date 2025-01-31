@@ -13,7 +13,6 @@ import { useAuth } from "@shared/hooks/useAuth"
 import {
 	getAuthHeader,
 	getCurrentTimestampWithNanoseconds,
-	getRandom,
 } from "@shared/utils"
 
 import routes from "../../../shared/routes"
@@ -47,6 +46,10 @@ const Add: React.FC<AddProps> = ({ open, setOpen, items, getAllElements }) => {
 			.required("Это обязательное поле")
 			.min(3, "Минимальная длина: 3")
 			.max(40, "Максимальная длина: 40"),
+		value: yup
+			.number()
+			.integer("Значение должно быть целым")
+			.required("Это обязательное поле"),
 	})
 
 	useEffect(() => {
@@ -73,6 +76,7 @@ const Add: React.FC<AddProps> = ({ open, setOpen, items, getAllElements }) => {
 		initialValues: {
 			name: "",
 			description: "",
+			value: "",
 		},
 		validationSchema: schema,
 		onSubmit: async (values, { resetForm }) => {
@@ -83,7 +87,7 @@ const Add: React.FC<AddProps> = ({ open, setOpen, items, getAllElements }) => {
 				id: uuidv4(),
 				name: values.name,
 				description: values.description,
-				value: getRandom(1, 100),
+				value: values.value,
 				deletedAt: null,
 				createdAt,
 				updatedAt,
@@ -146,6 +150,20 @@ const Add: React.FC<AddProps> = ({ open, setOpen, items, getAllElements }) => {
 					disabled={loading}
 				/>
 				<p className={cls.invalid}>{formik.errors.description}</p>
+				<label htmlFor="value" className={cls.label}>
+					Значение:
+				</label>
+				<Input
+					className={`${cls.input} ${formik.errors.value ? cls.isInvalid : ""}`}
+					name="value"
+					type="number"
+					size="large"
+					onChange={formik.handleChange}
+					value={formik.values.value}
+					autoComplete="off"
+					disabled={loading}
+				/>
+				<p className={cls.invalid}>{formik.errors.value}</p>
 				<Button
 					size="large"
 					variant="outlined"

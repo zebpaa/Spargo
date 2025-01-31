@@ -19,6 +19,3 @@ export const getCurrentTimestampWithNanoseconds = () => {
 		`${now.toISO({ includeOffset: false })}${String(nanoseconds + 1).padStart(4, "0")}Z`,
 	]
 }
-
-export const getRandom = (min: number, max: number) =>
-	Math.floor(Math.random() * (max - min) + min)
