@@ -1,3 +1,13 @@
+.isInvalid {
+	&:hover {
+		border: 1px solid red;
+	}
+	&:focus {
+		border: 1px solid red;
+	}
+	border: 1px solid red;
+}
+
 .input {
 	width: 300px;
 }
@@ -13,4 +23,12 @@
 .loader {
 	display: flex;
 	justify-content: center;
+}
+
+.invalid {
+	font-size: 14px;
+	color: red;
+	margin: 0;
+	padding-left: 5px;
+	margin-bottom: 5px;
 }

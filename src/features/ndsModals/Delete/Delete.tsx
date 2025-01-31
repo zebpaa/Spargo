@@ -1,3 +1,4 @@
+import type { Item } from "@shared/index";
 import type { InputRef } from "antd";
 
 
@@ -9,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Input, Modal } from "antd";
 import axios from "axios";
 import { useFormik } from "formik";
+import * as yup from "yup";
 
 
 
@@ -24,11 +26,31 @@ import cls from "./Delete.module.scss";
 type DeleteProps = {
 	open: boolean
 	setOpen: (open: boolean) => void
+	items: Item[]
+	getAllElements: () => void
 }
 
-const Delete: React.FC<DeleteProps> = ({ open, setOpen }) => {
+const Delete: React.FC<DeleteProps> = ({
+	open,
+	setOpen,
+	items,
+	getAllElements,
+}) => {
 	const inputRef = useRef<InputRef>(null)
 	const [loading, setLoading] = useState<boolean>(false)
+
+	const schema = yup.object({
+		id: yup
+			.string()
+			.trim()
+			.required("Это обязательное поле")
+			.min(3, "Минимальная длина: 3")
+			.max(40, "Максимальная длина: 40")
+			.oneOf(
+				items.map((i: Item) => i.id),
+				"Такого НДС нет",
+			),
+	})
 
 	useEffect(() => {
 		inputRef.current?.focus()
@@ -54,6 +76,7 @@ const Delete: React.FC<DeleteProps> = ({ open, setOpen }) => {
 		initialValues: {
 			id: "",
 		},
+		validationSchema: schema,
 		onSubmit: async (values, { resetForm }) => {
 			setLoading(true)
 			if (values.id === null) {
@@ -70,10 +93,11 @@ const Delete: React.FC<DeleteProps> = ({ open, setOpen }) => {
 					getAuthHeader(token),
 				)
 				console.log("response: ", response)
+				getAllElements()
 			} catch (e) {
 				if (axios.isAxiosError(e)) {
 					if (e.response?.status === 401) {
-						alert("Авторизуйся, пожалуйста (завези токен)")
+						alert("Авторизуйся, пожалуйста")
 					} else if (e.response?.status === 404) {
 						alert("Такого элемента нет")
 					} else {
@@ -94,8 +118,11 @@ const Delete: React.FC<DeleteProps> = ({ open, setOpen }) => {
 		<Modal open={open} onCancel={handleCancel} footer={[]}>
 			<form onSubmit={formik.handleSubmit}>
 				<h2>Удаление элемента навсегда</h2>
+				<label htmlFor="description" className={cls.label}>
+					Описание:
+				</label>
 				<Input
-					className={cls.input}
+					className={`${cls.input} ${formik.errors.id ? cls.isInvalid : ""}`}
 					placeholder="Id элемента:"
 					name="id"
 					type="text"
@@ -106,6 +133,7 @@ const Delete: React.FC<DeleteProps> = ({ open, setOpen }) => {
 					ref={inputRef}
 					disabled={loading}
 				/>
+				<p className={cls.invalid}>{formik.errors.id}</p>
 				<Button
 					size="large"
 					variant="outlined"

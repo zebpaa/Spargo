@@ -7,6 +7,7 @@ import { LoadingOutlined } from "@ant-design/icons"
 import { Button, Checkbox, Descriptions, Input, Spin } from "antd"
 import axios from "axios"
 import { useFormik } from "formik"
+import * as yup from "yup"
 
 import { useAuth } from "@shared/hooks/useAuth"
 import routes from "@shared/routes"
@@ -36,6 +37,25 @@ const Nds: React.FC = () => {
 	const navigate = useNavigate()
 	const [checked, setChecked] = useState<boolean>(false)
 
+	const schema = yup.object({
+		name: yup
+			.string()
+			.trim()
+			.required("Это обязательное поле")
+			.min(3, "Минимальная длина: 3")
+			.max(40, "Максимальная длина: 40"),
+		description: yup
+			.string()
+			.trim()
+			.required("Это обязательное поле")
+			.min(3, "Минимальная длина: 3")
+			.max(40, "Максимальная длина: 40"),
+		value: yup
+			.number()
+			.integer("Значение должно быть целым")
+			.required("Это обязательное поле"),
+	})
+
 	if (!authContext) {
 		return null
 	}
@@ -63,6 +83,7 @@ const Nds: React.FC = () => {
 			createdAt: item?.createdAt,
 			updatedAt: item?.updatedAt,
 		},
+		validationSchema: schema,
 		onSubmit: async (values, { resetForm }) => {
 			const idString = id as string
 			const [deletedAt, updatedAt] = getCurrentTimestampWithNanoseconds()
@@ -95,7 +116,7 @@ const Nds: React.FC = () => {
 			} catch (e) {
 				if (axios.isAxiosError(e)) {
 					if (e.response?.status === 401) {
-						alert("Авторизуйся, пожалуйста (завези токен)")
+						alert("Авторизуйся, пожалуйста")
 					} else if (e.response?.status === 404) {
 						alert("Такого элемента нет")
 					} else {
@@ -132,7 +153,7 @@ const Nds: React.FC = () => {
 		} catch (e) {
 			if (axios.isAxiosError(e)) {
 				if (e.response?.status === 401) {
-					alert("Авторизуйся, пожалуйста (завези токен)")
+					alert("Авторизуйся, пожалуйста")
 				} else if (e.response?.status === 404) {
 					alert("Такого элемента нет")
 				} else {
@@ -190,8 +211,7 @@ const Nds: React.FC = () => {
 				<div className={cls.control}>
 					<label htmlFor="name">Название:</label>
 					<Input
-						className={cls.input}
-						placeholder="Название:"
+						className={`${cls.input} ${formik.errors.name ? cls.isInvalid : ""}`}
 						name="name"
 						type="text"
 						size="large"
@@ -201,11 +221,11 @@ const Nds: React.FC = () => {
 						autoComplete="off"
 					/>
 				</div>
+				<p className={cls.invalid}>{formik.errors.name}</p>
 				<div className={cls.control}>
 					<label htmlFor="description">Описание:</label>
 					<Input
-						className={cls.input}
-						placeholder="Описание:"
+						className={`${cls.input} ${formik.errors.description ? cls.isInvalid : ""}`}
 						name="description"
 						type="text"
 						size="large"
@@ -214,11 +234,11 @@ const Nds: React.FC = () => {
 						autoComplete="off"
 					/>
 				</div>
+				<p className={cls.invalid}>{formik.errors.description}</p>
 				<div className={cls.control}>
 					<label htmlFor="value">Значение:</label>
 					<Input
-						className={cls.input}
-						placeholder="Значение:"
+						className={`${cls.input} ${formik.errors.value ? cls.isInvalid : ""}`}
 						name="value"
 						type="number"
 						size="large"
@@ -227,6 +247,7 @@ const Nds: React.FC = () => {
 						autoComplete="off"
 					/>
 				</div>
+				<p className={cls.invalid}>{formik.errors.value}</p>
 				<div className={cls.control}>
 					{item?.deletedAt !== null ? (
 						<label htmlFor="">Восстановить</label>

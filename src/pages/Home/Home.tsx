@@ -1,4 +1,5 @@
 import type { ModalName } from "../../features/ndsModals/index"
+import type { Item } from "@shared/index"
 
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router"
@@ -13,14 +14,6 @@ import { getAuthHeader } from "@shared/utils"
 import { getModal } from "../../features/ndsModals/index"
 import routes from "../../shared/routes"
 import cls from "./Home.module.scss"
-
-interface Item {
-	id: string
-	name: string
-	description: string
-	value: number
-	deletedAt: Date | null
-}
 
 const Home = () => {
 	const [items, setItems] = useState<Item[]>([])
@@ -65,7 +58,14 @@ const Home = () => {
 			return null
 		}
 
-		return <Component open={open} setOpen={setOpen} />
+		return (
+			<Component
+				open={open}
+				setOpen={setOpen}
+				items={items}
+				getAllElements={getAllElements}
+			/>
+		)
 	}
 
 	const getAllElements = async () => {
@@ -78,11 +78,12 @@ const Home = () => {
 			if (data) {
 				setItems(data)
 			}
+			console.log("data: ", data)
 		} catch (e) {
 			// Приведение типа к AxiosError
 			if (axios.isAxiosError(e)) {
 				if (e.response?.status === 401) {
-					alert("Авторизуйся, пожалуйста (завези токен)")
+					alert("Авторизуйся, пожалуйста")
 				} else if (e.response?.status === 404) {
 					alert("Такого элемента нет")
 				} else {
@@ -211,7 +212,7 @@ const Home = () => {
 
 			<div className={cls.btnGroup}>
 				<Button
-				className={cls.addBtn}
+					className={cls.addBtn}
 					size="large"
 					variant="outlined"
 					htmlType="submit"

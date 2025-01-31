@@ -1,35 +1,53 @@
-import type { InputRef } from "antd";
+import type { Item } from "@shared/index"
+import type { InputRef } from "antd"
 
+import React, { useEffect, useRef, useState } from "react"
 
+import { Button, Input, Modal } from "antd"
+import axios from "axios"
+import { useFormik } from "formik"
+import { v4 as uuidv4 } from "uuid"
+import * as yup from "yup"
 
-import React, { useEffect, useRef, useState } from "react";
+import { useAuth } from "@shared/hooks/useAuth"
+import {
+	getAuthHeader,
+	getCurrentTimestampWithNanoseconds,
+	getRandom,
+} from "@shared/utils"
 
-
-
-import { Button, Input, Modal } from "antd";
-import axios from "axios";
-import { useFormik } from "formik";
-import { v4 as uuidv4 } from "uuid";
-
-
-
-import { useAuth } from "@shared/hooks/useAuth";
-import { getAuthHeader, getCurrentTimestampWithNanoseconds, getRandom } from "@shared/utils";
-
-
-
-import routes from "../../../shared/routes";
-import cls from "./Add.module.scss";
-
+import routes from "../../../shared/routes"
+import cls from "./Add.module.scss"
 
 type AddProps = {
 	open: boolean
 	setOpen: (open: boolean) => void
+	items: Item[]
+	getAllElements: () => void
 }
 
-const Add: React.FC<AddProps> = ({ open, setOpen }) => {
+const Add: React.FC<AddProps> = ({ open, setOpen, items, getAllElements }) => {
 	const inputRef = useRef<InputRef>(null)
 	const [loading, setLoading] = useState<boolean>(false)
+
+	const schema = yup.object({
+		name: yup
+			.string()
+			.trim()
+			.required("Это обязательное поле")
+			.min(3, "Минимальная длина: 3")
+			.max(40, "Максимальная длина: 40")
+			.notOneOf(
+				items.map((i: Item) => i.name),
+				"Такой НДС уже есть",
+			),
+		description: yup
+			.string()
+			.trim()
+			.required("Это обязательное поле")
+			.min(3, "Минимальная длина: 3")
+			.max(40, "Максимальная длина: 40"),
+	})
 
 	useEffect(() => {
 		inputRef.current?.focus()
@@ -56,6 +74,7 @@ const Add: React.FC<AddProps> = ({ open, setOpen }) => {
 			name: "",
 			description: "",
 		},
+		validationSchema: schema,
 		onSubmit: async (values, { resetForm }) => {
 			setLoading(true)
 			const [createdAt, updatedAt] = getCurrentTimestampWithNanoseconds()
@@ -77,10 +96,11 @@ const Add: React.FC<AddProps> = ({ open, setOpen }) => {
 					getAuthHeader(token),
 				)
 				console.log("result: ", result)
+				getAllElements()
 			} catch (e) {
 				if (axios.isAxiosError(e)) {
 					if (e.response?.status === 401) {
-						alert("Авторизуйся, пожалуйста (завези токен)")
+						alert("Авторизуйся, пожалуйста")
 					} else {
 						console.log(e)
 					}
@@ -97,9 +117,11 @@ const Add: React.FC<AddProps> = ({ open, setOpen }) => {
 		<Modal open={open} onCancel={handleCancel} footer={[]}>
 			<form onSubmit={formik.handleSubmit}>
 				<h2>Новый элемент</h2>
+				<label htmlFor="name" className={cls.label}>
+					Название:
+				</label>
 				<Input
-					className={cls.input}
-					placeholder="Название:"
+					className={`${cls.input} ${formik.errors.name ? cls.isInvalid : ""}`}
 					name="name"
 					type="text"
 					size="large"
@@ -109,9 +131,12 @@ const Add: React.FC<AddProps> = ({ open, setOpen }) => {
 					autoComplete="off"
 					disabled={loading}
 				/>
+				<p className={cls.invalid}>{formik.errors.name}</p>
+				<label htmlFor="description" className={cls.label}>
+					Описание:
+				</label>
 				<Input
-					className={cls.input}
-					placeholder="Описание:"
+					className={`${cls.input} ${formik.errors.description ? cls.isInvalid : ""}`}
 					name="description"
 					type="text"
 					size="large"
@@ -120,6 +145,7 @@ const Add: React.FC<AddProps> = ({ open, setOpen }) => {
 					autoComplete="off"
 					disabled={loading}
 				/>
+				<p className={cls.invalid}>{formik.errors.description}</p>
 				<Button
 					size="large"
 					variant="outlined"
